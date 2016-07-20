@@ -15,7 +15,7 @@ namespace RayTrace
 	class Scene
 	{
 	public:
-		void GenerateRayTrace() const ;
+		void GenerateRayTrace();
 
 	private:
 		bool CalPixel_byRay(const ICollideRay& ray, D3DXCOLOR* out_color, int recurDepth) const ;

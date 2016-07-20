@@ -7,14 +7,13 @@ namespace RayTrace
 		if( IsMaxRecurDepth( recurDepth ) )
 			return false;
 
+		bool is_collide = false;
+		float min_z = c_max_dist;
+		D3DXVECTOR3 min_collideNormal;
+		D3DXVECTOR3 min_collidePoint;
 		for( auto it_model = m_vec_model.begin(); it_model != m_vec_model.end(); ++it_model)
 		{
-			bool is_collide = false;
-
-			float min_z = c_max_dist;
-			D3DXVECTOR3 min_collideNormal;
-			D3DXVECTOR3 min_collidePoint;
-
+			
 			D3DXVECTOR3 collidePoint, collideNormal;
 			float collideDist;
 			if( (*it_model)->IsCollide(ray, &collidePoint, &collideDist, &collideNormal) )
@@ -27,22 +26,28 @@ namespace RayTrace
 					min_collideNormal = collideNormal;
 				}
 			}
+		}
 
-			if( is_collide )
-			{
-				// 计算当前点被光照的影响
-				out_color += CalLights( &min_collidePoint );
+		if( is_collide )
+		{
+			// 计算当前点被光照的影响
+			out_color += CalLights( &min_collidePoint );
 
-				// 计算当前点的反射的影响
-				CCollideRay out_reflectRay;
-				CalReflectRay( min_collidePoint, min_collideNormal, ray.GetNormal(), &out_reflectRay );
-				CalPixel_byRay( out_reflectRay, out_color, recurDepth+1 );
+			// 计算当前点的反射的影响
+			CCollideRay out_reflectRay;
+			CalReflectRay( min_collidePoint, min_collideNormal, ray.GetNormal(), &out_reflectRay );
+			CalPixel_byRay( out_reflectRay, out_color, recurDepth+1 );
 
-				// 计算当前点的折射的影响
-				CCollideRay out_refractRay;
-				CalRefractRay( min_collidePoint, min_collideNormal, ray.GetNormal(), &out_refractRay );
-				CalPixel_byRay( out_refractRay, out_color, recurDepth+1 );
-			}
+			// 计算当前点的折射的影响
+			CCollideRay out_refractRay;
+			CalRefractRay( min_collidePoint, min_collideNormal, ray.GetNormal(), &out_refractRay );
+			CalPixel_byRay( out_refractRay, out_color, recurDepth+1 );
+
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -64,7 +69,7 @@ namespace RayTrace
 		return CCollideRay( D3DXVECTOR3(0, 0, -5), screenpoint );
 	}
 
-	void Scene::GenerateRayTrace() const
+	void Scene::GenerateRayTrace()
 	{
 		for( int screen_x = 0; screen_x < c_screen_width; ++screen_x )
 			for( int screen_y = 0; screen_y < c_screen_height; ++screen_y )
