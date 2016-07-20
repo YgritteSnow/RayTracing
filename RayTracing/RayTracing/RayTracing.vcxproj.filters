@@ -21,12 +21,27 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="raytrace_algo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="raytrace_scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="raytrace_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="raytrace_model.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="raytrace_scene.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raytrace_algo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raytrace_config.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

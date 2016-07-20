@@ -66,9 +66,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="raytrace_algo.cpp" />
+    <ClCompile Include="raytrace_config.cpp" />
     <ClCompile Include="raytrace_model.cpp" />
+    <ClCompile Include="raytrace_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="raytrace_algo.h" />
+    <ClInclude Include="raytrace_config.h" />
     <ClInclude Include="raytrace_model.h" />
     <ClInclude Include="raytrace_scene.h" />
   </ItemGroup>

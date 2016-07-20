@@ -5,32 +5,26 @@ namespace RayTrace
 {
 	/************************************************************************/
 	/* 光线                                                                     */
-	/************************************************************************/
-	D3DXVECTOR3 CCollideLine::GetNormal() const
-	{
-		D3DXVECTOR3 temp = m_end - m_start;
-		D3DXVec3Normalize(&temp, &temp);
-		return temp;
-	}
+	/************************************************************************
 
 	/************************************************************************/
 	/* 模型                                                                     */
 	/************************************************************************/
-	bool CCollildeBall::IsCollide(const ICollideLine& line, D3DXVECTOR3* out_collidePoint) const
+	bool CCollildeBall::IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const
 	{
 		float proj_length, proj_half;
 		if( CalLineCross(line, NULL, &proj_length, &proj_half) )
 		{
-			float near_length = proj_length - proj_length;
-			if( near_length >= 0 && near_length <= line.GetLength() )
+			float near_length = proj_length - proj_half;
+			if( near_length >= 0 )
 			{
 				if( out_collidePoint) 
 					*out_collidePoint = line.GetStartPoint() + line.GetNormal() * near_length;
 				return true;
 			}
 
-			float far_length = proj_length + proj_length;
-			if( far_length >= 0 && far_length <= line.GetLength() )
+			float far_length = proj_length + proj_half;
+			if( far_length >= 0 )
 			{
 				if( out_collidePoint ) 
 					*out_collidePoint = line.GetStartPoint() + line.GetNormal() * far_length;
@@ -45,7 +39,7 @@ namespace RayTrace
 		}
 	}
 	
-	bool CCollildeBall::CalLineCross(const ICollideLine& line, D3DXVECTOR3* out_projPoint, float* out_projLengthProj, float* out_projLengthHalf) const
+	bool CCollildeBall::CalLineCross(const ICollideRay& line, D3DXVECTOR3* out_projPoint, float* out_projLengthProj, float* out_projLengthHalf) const
 	{
 		float proj_factor = D3DXVec3Dot( &(m_center - line.GetStartPoint()), &line.GetNormal() );
 		float o_to_line = D3DXVec3LengthSq(&(m_center - line.GetStartPoint())) - proj_factor * proj_factor;
@@ -58,7 +52,7 @@ namespace RayTrace
 			*out_projLengthHalf = sqrt( o_to_line );
 	}
 
-	bool CCollideRectangle::IsCollide(const ICollideLine& line, D3DXVECTOR3* out_collidePoint) const
+	bool CCollideRectangle::IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const
 	{
 		D3DXVECTOR3 collide_point;
 		if( CalLineCross(line, &collide_point) )
@@ -87,7 +81,7 @@ namespace RayTrace
 		}
 	}
 
-	bool CCollideRectangle::CalLineCross(const ICollideLine& line, D3DXVECTOR3* out_collidePoint) const
+	bool CCollideRectangle::CalLineCross(const ICollideRay& line, D3DXVECTOR3* out_collidePoint) const
 	{
 		float proj_factor = D3DXVec3Dot( &(m_center - line.GetStartPoint()), &line.GetNormal() );
 		if( out_collidePoint )
