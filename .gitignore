@@ -47,3 +47,10 @@ Temporary Items
 .apdisk
 *.opensdf
 *.ipch
+*.unsuccessfulbuild
+*.tlog
+*.idb
+*.pdb
+*.cache
+*.lastbuildstate
+*.log
