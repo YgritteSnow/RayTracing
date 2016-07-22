@@ -50,6 +50,8 @@ namespace RayTrace
 			*out_projPoint = line.GetStartPoint() + line.GetNormal() * proj_factor;
 		if( out_projLengthHalf )
 			*out_projLengthHalf = sqrt( o_to_line );
+
+		return true;
 	}
 
 	bool CCollideRectangle::IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const

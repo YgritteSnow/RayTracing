@@ -21,13 +21,15 @@ namespace RayTrace
 	{
 	public:
 		CCollideRay(){}
-		CCollideRay(const D3DXVECTOR3& start, const D3DXVECTOR3& normal):m_start(start), m_normal(normal){}
+		CCollideRay(const D3DXVECTOR3& start, const D3DXVECTOR3& normal):m_start(start), m_normal(normal){
+			D3DXVec3Normalize(&m_normal, &m_normal);}
 
 		virtual D3DXVECTOR3 GetNormal() const {return m_normal;};
 		virtual D3DXVECTOR3 GetStartPoint() const {return m_start;};
 		virtual void Set( const D3DXVECTOR3& start, const D3DXVECTOR3& normal ){
 			m_start = start;
 			m_normal = normal;
+			D3DXVec3Normalize(&m_normal, &m_normal);
 		}
 		
 	private:
@@ -42,12 +44,14 @@ namespace RayTrace
 	{
 	public:
 		virtual bool IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const = 0;
+		virtual D3DXVECTOR3 GetCenter() const = 0;
 	};
 
 	class CCollildeBall
 	{
 	public:
 		virtual bool IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const;
+		virtual D3DXVECTOR3 GetCenter() const {return m_center;};
 
 	protected:
 		bool CalLineCross(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideLengthProj, float* out_collideLengthHalf) const;
@@ -61,6 +65,7 @@ namespace RayTrace
 	{
 	public:
 		virtual bool IsCollide(const ICollideRay& line, D3DXVECTOR3* out_collidePoint, float* out_collideDist, D3DXVECTOR3* out_collideNormal) const;
+		virtual D3DXVECTOR3 GetCenter() const {return m_center;};
 
 	protected:
 		virtual const D3DXVECTOR3& GetNormal() const;
@@ -96,4 +101,6 @@ namespace RayTrace
 	};
 
 }
+
+
 #endif 

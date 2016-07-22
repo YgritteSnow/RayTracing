@@ -85,4 +85,30 @@ namespace RayTrace
 				}
 			}
 	}
+
+	D3DXCOLOR Scene::CalLights(D3DXVECTOR3* pos) const 
+	{
+		bool is_collide = false;
+		for( auto it_model = m_vec_model.begin(); it_model != m_vec_model.end(); ++it_model )
+		{
+			CCollideRay shadowRay(*pos, (*it_model)->GetCenter());
+
+			D3DXVECTOR3 collidePoint, collideNormal;
+			float collideDist;
+			if( (*it_model)->IsCollide(shadowRay, &collidePoint, &collideDist, &collideNormal) )
+			{
+				is_collide = true;
+				break;
+			}
+		}
+
+		if( !is_collide )
+		{
+
+		}
+		else
+		{
+			return D3DXCOLOR();
+		}
+	}
 }

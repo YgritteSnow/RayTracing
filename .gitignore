@@ -54,3 +54,6 @@ Temporary Items
 *.cache
 *.lastbuildstate
 *.log
+*.obj
+*.obj
+*.obj
